@@ -19,14 +19,14 @@ export default function BottomNav() {
           <Link
             key={item.path}
             to={item.path}
-            className={`flex flex-col items-center justify-center gap-1 flex-1 py-1 rounded-2xl transition-all duration-300 ${
+            className={`flex flex-col items-center justify-center gap-1 flex-1 min-w-0 px-1 py-1 rounded-2xl transition-all duration-300 ${
               isActive
                 ? "bg-white/10 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.15)]"
                 : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
             }`}
           >
             <span className="text-lg">{item.icon}</span>
-            <span className="text-[10px] font-medium tracking-wide">{item.label}</span>
+            <span className="text-[9px] sm:text-[10px] font-medium tracking-wide truncate max-w-full">{item.label}</span>
           </Link>
         );
       })}

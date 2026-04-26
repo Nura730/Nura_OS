@@ -50,7 +50,7 @@ export default function Expenses() {
           placeholder="What did you buy? (e.g. Coffee)"
           className="w-full py-3 px-4 rounded-xl bg-black/20 border border-white/10 text-white outline-none focus:border-red-500/50 transition-all placeholder:text-gray-500 shadow-inner"
         />
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <span className="text-gray-500">₹</span>
@@ -67,7 +67,7 @@ export default function Expenses() {
           <button 
             onClick={addExpense} 
             disabled={!title || !amount}
-            className="bg-red-500 hover:bg-red-400 disabled:opacity-50 disabled:hover:bg-red-500 text-white font-semibold px-8 rounded-xl transition-all shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+            className="bg-red-500 hover:bg-red-400 disabled:opacity-50 disabled:hover:bg-red-500 text-white font-semibold py-3 sm:py-0 px-8 rounded-xl transition-all shadow-[0_0_15px_rgba(239,68,68,0.2)] flex-shrink-0"
           >
             Add
           </button>

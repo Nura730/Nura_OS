@@ -43,20 +43,22 @@ export default function Growth() {
       <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400 tracking-tight">Growth Tracker</h1>
 
       {/* Input */}
-      <div className="flex gap-3 relative group">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <span className="text-gray-500">📚</span>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1 group">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span className="text-gray-500">📚</span>
+          </div>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && addCourse()}
+            placeholder="Add course (e.g. Masterclass)"
+            className="w-full py-4 pl-12 pr-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all duration-300 placeholder:text-gray-500 shadow-inner"
+          />
         </div>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && addCourse()}
-          placeholder="Add course (e.g. Fullstack Masterclass)"
-          className="flex-1 py-4 pl-12 pr-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all duration-300 placeholder:text-gray-500 shadow-inner"
-        />
         <button 
           onClick={addCourse} 
-          className="bg-blue-500 hover:bg-blue-400 text-white font-semibold px-6 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)]"
+          className="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-4 sm:py-0 px-6 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] flex-shrink-0"
         >
           Add
         </button>

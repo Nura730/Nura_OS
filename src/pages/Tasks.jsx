@@ -49,20 +49,22 @@ export default function Tasks() {
       <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 tracking-tight">Tasks</h1>
 
       {/* Input */}
-      <div className="flex gap-3 relative group">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <span className="text-gray-500">+</span>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1 group">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span className="text-gray-500">+</span>
+          </div>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && addTask()}
+            placeholder="What needs to be done?"
+            className="w-full py-4 pl-10 pr-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all duration-300 placeholder:text-gray-500 shadow-inner"
+          />
         </div>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && addTask()}
-          placeholder="What needs to be done?"
-          className="flex-1 py-4 pl-10 pr-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all duration-300 placeholder:text-gray-500 shadow-inner"
-        />
         <button 
           onClick={addTask} 
-          className="bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-6 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(52,211,153,0.3)] hover:shadow-[0_0_25px_rgba(52,211,153,0.5)]"
+          className="bg-emerald-500 hover:bg-emerald-400 text-black font-semibold py-4 sm:py-0 px-6 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(52,211,153,0.3)] hover:shadow-[0_0_25px_rgba(52,211,153,0.5)] flex-shrink-0"
         >
           Add
         </button>
