@@ -1,42 +1,43 @@
 import express from "express";
 import cors from "cors";
-import sqlite3 from "sqlite3";
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import path from "path";
-import { fileURLToPath } from "url";
+import dotenv from "dotenv";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const JWT_SECRET = "nura_os_super_secret_key_2026";
+const JWT_SECRET = process.env.JWT_SECRET || "nura_os_super_secret_key_2026";
+const MONGO_URI = process.env.MONGO_URI;
 
-// Initialize SQLite Database
-const db = new sqlite3.Database(path.join(__dirname, "nura.db"), (err) => {
-  if (err) console.error("Error opening database", err);
-  else {
-    db.run(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        email TEXT UNIQUE,
-        password TEXT
-      )
-    `);
-    
-    db.run(`
-      CREATE TABLE IF NOT EXISTS user_data (
-        userId INTEGER PRIMARY KEY,
-        payload TEXT,
-        lastSynced DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(userId) REFERENCES users(id)
-      )
-    `);
-  }
+if (!MONGO_URI) {
+  console.error("FATAL ERROR: MONGO_URI is not defined in environment variables.");
+  process.exit(1);
+}
+
+// Connect to MongoDB
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("Connected to MongoDB Atlas"))
+  .catch((err) => console.error("Could not connect to MongoDB:", err));
+
+// --- SCHEMAS ---
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
 });
+const User = mongoose.model("User", userSchema);
+
+const userDataSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, unique: true },
+  payload: { type: String, required: true },
+  lastSynced: { type: Date, default: Date.now }
+});
+const UserData = mongoose.model("UserData", userDataSchema);
 
 // Middleware to verify JWT
 const authenticate = (req, res, next) => {
@@ -60,64 +61,73 @@ app.post("/auth/register", async (req, res) => {
   if (!name || !email || !password) return res.status(400).json({ error: "All fields required" });
 
   try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ error: "Email already exists" });
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    db.run(
-      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-      [name, email, hashedPassword],
-      function (err) {
-        if (err) return res.status(400).json({ error: "Email already exists" });
-        const token = jwt.sign({ userId: this.lastID }, JWT_SECRET, { expiresIn: "30d" });
-        res.json({ token, user: { id: this.lastID, name, email } });
-      }
-    );
+    const user = new User({ name, email, password: hashedPassword });
+    await user.save();
+
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "30d" });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
   } catch (err) {
+    console.error("Registration error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
 
 // 2. Login
-app.post("/auth/login", (req, res) => {
+app.post("/auth/login", async (req, res) => {
   const { email, password } = req.body;
   
-  db.get("SELECT * FROM users WHERE email = ?", [email], async (err, user) => {
-    if (err || !user) return res.status(400).json({ error: "Invalid credentials" });
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ error: "Invalid credentials" });
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ error: "Invalid credentials" });
 
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: "30d" });
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
-  });
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "30d" });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 // 3. Sync Data (Save)
-app.post("/data/sync", authenticate, (req, res) => {
+app.post("/data/sync", authenticate, async (req, res) => {
   const payload = JSON.stringify(req.body);
   
-  db.run(
-    `INSERT INTO user_data (userId, payload, lastSynced) VALUES (?, ?, CURRENT_TIMESTAMP)
-     ON CONFLICT(userId) DO UPDATE SET payload = excluded.payload, lastSynced = CURRENT_TIMESTAMP`,
-    [req.userId, payload],
-    (err) => {
-      if (err) return res.status(500).json({ error: "Failed to save data" });
-      res.json({ success: true, message: "Data synced successfully" });
-    }
-  );
+  try {
+    await UserData.findOneAndUpdate(
+      { userId: req.userId },
+      { payload, lastSynced: Date.now() },
+      { upsert: true, new: true }
+    );
+    res.json({ success: true, message: "Data synced successfully" });
+  } catch (err) {
+    console.error("Sync error:", err);
+    res.status(500).json({ error: "Failed to save data" });
+  }
 });
 
 // 4. Get Data (Load)
-app.get("/data/sync", authenticate, (req, res) => {
-  db.get("SELECT payload FROM user_data WHERE userId = ?", [req.userId], (err, row) => {
-    if (err) return res.status(500).json({ error: "Failed to load data" });
-    if (!row) return res.json({ payload: null });
+app.get("/data/sync", authenticate, async (req, res) => {
+  try {
+    const data = await UserData.findOne({ userId: req.userId });
+    if (!data) return res.json({ payload: null });
     
-    res.json({ payload: JSON.parse(row.payload) });
-  });
+    res.json({ payload: JSON.parse(data.payload) });
+  } catch (err) {
+    console.error("Load error:", err);
+    res.status(500).json({ error: "Failed to load data" });
+  }
 });
 
-app.get("/", (req, res) => res.send("Nura OS SQLite Backend Running"));
+app.get("/", (req, res) => res.send("Nura OS MongoDB Backend Running"));
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
