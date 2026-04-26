@@ -1,15 +1,24 @@
 import Card from "../components/Card";
 import { motion } from "framer-motion";
 import { useApp } from "../context/AppContext";
+import { useAuth } from "../context/AuthContext";
 import { generateInsight } from "../utils/insightEngine";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getTodayDate } from "../utils/historyEngine";
 import { getTopPriorityTask } from "../utils/priorityEngine";
 import FocusTimer from "../components/FocusTimer";
 import { generateDailyPlan } from "../utils/plannerEngine";
 
 export default function Dashboard() {
-  const { tasks, courses, history, setHistory, xp, focusMinutes, dailyExpenses, expenseBudget } = useApp();
+  const { tasks, courses, history, setHistory, xp, focusMinutes, dailyExpenses, expenseBudget, syncToCloud } = useApp();
+  const { logout, user } = useAuth();
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    await syncToCloud();
+    setTimeout(() => setIsSyncing(false), 1000);
+  };
 
   // TASK LOGIC
   const totalTasks = tasks.length;
@@ -125,14 +134,30 @@ export default function Dashboard() {
             <div className="w-full h-full bg-black rounded-full flex items-center justify-center text-xl">🚀</div>
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-bold text-gray-100">{greeting}, User!</h1>
+            <h1 className="text-xl font-bold text-gray-100">{greeting}, {user?.name || "User"}!</h1>
             <span className="text-xs text-gray-400 font-medium">{formattedDate}</span>
           </div>
         </div>
-        <div className="flex flex-col items-end">
-          <span className="text-xs text-emerald-400 font-bold tracking-widest uppercase mb-1">Level {Math.floor(xp / 100) + 1}</span>
-          <div className="w-20 bg-white/10 h-1.5 rounded-full overflow-hidden">
-            <div className="bg-emerald-400 h-full rounded-full" style={{ width: `${xp % 100}%` }}></div>
+        <div className="flex flex-col items-end gap-2">
+          <div className="flex gap-2">
+            <button 
+              onClick={handleSync}
+              className="text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1"
+            >
+              {isSyncing ? "⏳ Syncing..." : "☁️ Sync Data"}
+            </button>
+            <button 
+              onClick={logout}
+              className="text-xs font-bold text-gray-400 bg-white/5 hover:bg-red-500/10 hover:text-red-400 px-3 py-1.5 rounded-full transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+          <div className="flex flex-col items-end w-full">
+            <span className="text-[10px] text-emerald-400 font-bold tracking-widest uppercase mb-1">Level {Math.floor(xp / 100) + 1}</span>
+            <div className="w-20 bg-white/10 h-1.5 rounded-full overflow-hidden">
+              <div className="bg-emerald-400 h-full rounded-full" style={{ width: `${xp % 100}%` }}></div>
+            </div>
           </div>
         </div>
       </div>

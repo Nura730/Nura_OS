@@ -96,6 +96,54 @@ export function AppProvider({ children }) {
     localStorage.setItem("expenseBudget", expenseBudget);
   }, [expenseBudget]);
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+  const syncToCloud = async () => {
+    const token = localStorage.getItem("nura_token");
+    if (!token) return;
+
+    try {
+      await fetch(`${API_URL}/data/sync`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ tasks, courses, history, xp, focusMinutes, dailyExpenses, transactions, expenseBudget })
+      });
+    } catch (error) {
+      console.error("Sync failed", error);
+    }
+  };
+
+  const loadFromCloud = async () => {
+    const token = localStorage.getItem("nura_token");
+    if (!token) return;
+
+    try {
+      const res = await fetch(`${API_URL}/data/sync`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.payload) {
+        setTasks(data.payload.tasks || []);
+        setCourses(data.payload.courses || []);
+        setHistory(data.payload.history || []);
+        setXp(data.payload.xp || 0);
+        setFocusMinutes(data.payload.focusMinutes || 0);
+        setDailyExpenses(data.payload.dailyExpenses || 0);
+        setTransactions(data.payload.transactions || []);
+        setExpenseBudget(data.payload.expenseBudget || 1000);
+      }
+    } catch (error) {
+      console.error("Load failed", error);
+    }
+  };
+
+  useEffect(() => {
+    loadFromCloud();
+  }, []);
+
   return (
     <AppContext.Provider value={{ 
       tasks, setTasks, 
@@ -105,7 +153,8 @@ export function AppProvider({ children }) {
       focusMinutes, setFocusMinutes,
       transactions, setTransactions,
       dailyExpenses,
-      expenseBudget, setExpenseBudget
+      expenseBudget, setExpenseBudget,
+      syncToCloud
     }}>
       {children}
     </AppContext.Provider>
