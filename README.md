@@ -1,64 +1,154 @@
 # 🚀 Nura OS — AI-Powered Life Management System
 
-Nura OS is a smart productivity system that helps you manage tasks, track learning progress, and get AI-driven insights about your behavior.
+Nura OS is a **real-time productivity and behavior management system** designed to help users take control of their daily tasks, learning, focus, and habits.
+
+Unlike traditional todo apps, Nura OS acts as a **decision-making assistant**, guiding users on what to do next and improving consistency.
 
 ---
 
-## ✨ Features
+## 🌍 Live Demo
+
+👉 https://nuraos-beta.vercel.app
+
+---
+
+## ✨ Core Features
 
 ### 📋 Task Management
-- Add, complete, delete tasks
-- Smart priority assignment (auto AI-based)
-- Progress tracking
+
+* Add, edit, delete tasks
+* Smart priority assignment (AI-based)
+* Filter & sort tasks
+* “Do This Next” system
+
+---
 
 ### 🎓 Growth Tracker
-- Track courses (Fullstack, Cybersecurity, etc.)
-- Monitor progress %
-- Long-term learning insights
+
+* Track courses (Fullstack, Cybersecurity, etc.)
+* Monitor progress %
+* Long-term skill tracking
+
+---
 
 ### 🧠 AI Insight Engine
-- Rule-based + smart analysis
-- Detects:
-  - Consistency issues
-  - Over-focus on tasks vs learning
-  - Performance trends
 
-### 📊 Dashboard System
-- Daily score
-- Task completion %
-- Study progress
-- Consistency tracking
-- Streak system
+* Rule-based + smart analysis
+* Detects:
 
-### ⚡ Smart Decision Engine
-- Suggests what to do next
-- Highlights top priority task
+  * Low consistency
+  * Imbalance between tasks & learning
+  * Behavioral patterns
+* Provides:
 
-### 💾 Persistence
-- Data saved using localStorage
-- No data loss on refresh
+  * Insight message
+  * Action suggestion
+
+---
+
+### ⚡ Smart Daily Planner
+
+* Generates daily plan automatically
+* Suggests next tasks based on priority
+* Reduces decision fatigue
+
+---
+
+### ⏱️ Focus System (Pomodoro)
+
+* 25-minute focus timer
+* Tracks deep work time
+* Helps reduce distractions (reels, scrolling)
+
+---
+
+### 📊 Time Tracking
+
+* Tracks daily focus minutes
+* Shows productivity trends
+
+---
+
+### 💰 Expense Awareness
+
+* Budget tracking system
+* Alerts when overspending
+
+---
+
+### 🎮 Gamification
+
+* XP system (tasks + focus + streak)
+* Streak tracking (real consecutive days)
+* Motivation through progress
+
+---
+
+### 🔁 Consistency & History
+
+* Daily performance tracking
+* Streak system (true consecutive logic)
+* Behavior-based analytics
 
 ---
 
 ## 🧠 Tech Stack
 
-- React (Vite)
-- Tailwind CSS
-- Framer Motion
-- Context API (State Management)
+* ⚛️ React (Vite)
+* 🎨 Tailwind CSS
+* 🎬 Framer Motion
+* 🧩 Context API (State Management)
+* 💾 LocalStorage (Persistence)
 
 ---
 
-## 📸 Screenshots
+## 📁 Architecture
 
-(Add screenshots later)
+```
+/components
+/pages
+/context
+/utils
+/services
+```
+
+* Clean modular structure
+* Logic separated into engines:
+
+  * priorityEngine.js
+  * insightEngine.js
+  * plannerEngine.js
 
 ---
 
-## 🚀 Getting Started
+## 🎯 Problem Solved
 
-```bash
-npm install
-npm run dev
+Nura OS is designed to solve:
 
+* ❌ Starting tasks but not finishing
+* ❌ Forgetting important work
+* ❌ Wasting time on distractions
+* ❌ Lack of consistency
+* ❌ Poor time & money management
 
+---
+
+## 🚀 Future Improvements
+
+* 🔐 Authentication + cloud sync
+* 🧠 Real AI integration (OpenAI/Gemini)
+* 📱 Mobile app (React Native)
+* 🔔 Notifications system
+* 📅 Calendar integration
+
+---
+
+## 👨‍💻 Author
+
+**Nura**
+
+---
+
+## 📌 Status
+
+🚧 Actively improving — evolving into a full Life OS
