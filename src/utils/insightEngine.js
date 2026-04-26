@@ -33,38 +33,62 @@ export function generateInsight(tasks, courses, history) {
 
   // No data
   if (totalTasks === 0 && totalCourses === 0) {
-    return "Start tracking tasks or courses to unlock insights.";
+    return {
+      message: "Start tracking tasks or courses to unlock insights.",
+      action: "Add your first task for today.",
+    };
   }
 
   // Declining performance
   if (avgRecent < overallAvg - 10) {
-    return "Your consistency is dropping. Try reducing workload and refocusing.";
+    return {
+      message: "Your consistency is dropping. Try reducing workload.",
+      action: "Take a break, then complete your highest priority task.",
+    };
   }
 
   // Improving trend
   if (avgRecent > overallAvg + 10) {
-    return "You are improving your consistency. Keep pushing forward.";
+    return {
+      message: "You are improving your consistency. Keep pushing forward.",
+      action: "Maintain your streak and tackle another high-priority task.",
+    };
   }
 
   // Low tasks
   if (taskRate < 0.5 && totalTasks > 0) {
-    return "You are not completing enough tasks. Focus on finishing what you start.";
+    return {
+      message: "You are not completing enough tasks.",
+      action: "Focus on finishing what you start. Do one task right now.",
+    };
   }
 
   // High study, low execution
   if (avgStudy > 50 && taskRate < 0.5) {
-    return "You are learning well but not executing enough daily tasks.";
+    return {
+      message: "You are learning well but not executing enough daily tasks.",
+      action: "Apply what you learned. Complete a project task.",
+    };
   }
 
   // Strong streak
   if (streak >= 3) {
-    return `You are on a ${streak}-day streak. Stay consistent.`;
+    return {
+      message: `You are on a ${streak}-day streak. Excellent work.`,
+      action: "Keep the momentum going. Knock out a medium priority task.",
+    };
   }
 
   // Balanced
   if (taskRate > 0.7 && avgStudy > 50) {
-    return "Great balance between execution and growth.";
+    return {
+      message: "Great balance between execution and growth.",
+      action: "Review your upcoming goals to maintain this balance.",
+    };
   }
 
-  return "Your performance is stable. Try pushing slightly harder.";
+  return {
+    message: "Your performance is stable.",
+    action: "Try pushing slightly harder with a focus session.",
+  };
 }

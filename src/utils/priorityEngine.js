@@ -5,7 +5,8 @@ export function assignPriority(taskText, tasks) {
   if (
     text.includes("exam") ||
     text.includes("deadline") ||
-    text.includes("submit")
+    text.includes("submit") ||
+    text.includes("project")
   ) {
     return "high";
   }
@@ -27,6 +28,28 @@ export function assignPriority(taskText, tasks) {
   }
 
   return "low";
+}
+
+export function assignCategory(taskText) {
+  const text = taskText.toLowerCase();
+  
+  if (text.includes("exam") || text.includes("study") || text.includes("read") || text.includes("learn") || text.includes("course")) {
+    return { name: "Learning", color: "text-blue-400 bg-blue-500/10 border-blue-500/20" };
+  }
+  
+  if (text.includes("workout") || text.includes("gym") || text.includes("run") || text.includes("health") || text.includes("water")) {
+    return { name: "Health", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
+  }
+  
+  if (text.includes("buy") || text.includes("pay") || text.includes("shop") || text.includes("grocery")) {
+    return { name: "Errands", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" };
+  }
+  
+  if (text.includes("work") || text.includes("meeting") || text.includes("email") || text.includes("client") || text.includes("project")) {
+    return { name: "Work", color: "text-purple-400 bg-purple-500/10 border-purple-500/20" };
+  }
+  
+  return { name: "Life", color: "text-gray-400 bg-gray-500/10 border-gray-500/20" };
 }
 
 
