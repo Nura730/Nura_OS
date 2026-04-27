@@ -31,8 +31,8 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[80vh]">
-      <Card className="w-full max-w-md p-8 bg-gradient-to-br from-emerald-500/10 via-cyan-500/5 to-transparent border border-emerald-500/20 shadow-2xl">
+    <div className="flex items-center justify-center min-h-[100dvh] px-4 py-8">
+      <Card className="w-full max-w-md p-6 sm:p-8 bg-gradient-to-br from-emerald-500/10 via-cyan-500/5 to-transparent border border-emerald-500/20 shadow-2xl">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 mb-4 border border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
             <span className="text-2xl">⚡</span>

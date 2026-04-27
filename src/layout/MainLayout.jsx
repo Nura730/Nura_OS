@@ -22,7 +22,7 @@ export default function MainLayout({ children }) {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-[#050505] text-white relative">
+    <div className="flex flex-col min-h-[100dvh] bg-[#050505] text-white relative">
       
       {/* Background ambient glowing orbs */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
@@ -69,7 +69,7 @@ export default function MainLayout({ children }) {
         </div>
       </header>
 
-      <main className="flex-1 p-4 md:p-8 overflow-y-auto pb-32 z-10 no-scrollbar">
+      <main className="flex-1 p-4 md:p-8 pb-32 z-10">
         {children}
       </main>
 
