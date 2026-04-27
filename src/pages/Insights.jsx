@@ -27,8 +27,8 @@ export default function Insights() {
       
       <div className="flex flex-col gap-3">
         {history.slice().reverse().map((entry, idx) => (
-          <div key={idx} className="flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-2xl hover:bg-white/10 transition-colors">
-            <div className="flex flex-col">
+          <div key={idx} className="flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-2xl hover:bg-white/10 transition-colors gap-2">
+            <div className="flex flex-col flex-1 min-w-0">
               <span className="font-mono text-sm text-gray-300 bg-white/5 px-2 py-1 rounded-md w-fit mb-1">{entry.date}</span>
               <span className="text-xs text-gray-500">Daily Performance</span>
             </div>

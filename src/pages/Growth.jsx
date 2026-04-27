@@ -74,8 +74,8 @@ export default function Growth() {
             {/* Background Glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-colors pointer-events-none"></div>
             
-            <div className="flex justify-between items-center z-10">
-              <span className="text-lg font-medium text-gray-200">{course.name}</span>
+            <div className="flex justify-between items-start sm:items-center z-10 gap-2">
+              <span className="text-lg font-medium text-gray-200 break-words flex-1 min-w-0">{course.name}</span>
               <button
                 onClick={() => deleteCourse(course.id)}
                 className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 p-2 rounded-lg hover:bg-red-500/10 transition-all duration-300"

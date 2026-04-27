@@ -81,13 +81,13 @@ export default function Tasks() {
           .map((task) => (
           <div
             key={task.id}
-            className={`group flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-2xl hover:bg-white/10 transition-all duration-300 ${task.completed ? "opacity-60" : ""}`}
+            className={`group flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-2xl hover:bg-white/10 transition-all duration-300 gap-2 sm:gap-4 ${task.completed ? "opacity-60" : ""}`}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
               {/* Premium Custom Checkbox */}
               <button
                 onClick={() => toggleTask(task.id)}
-                className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 shrink-0 ${
                   task.completed
                     ? "bg-emerald-500 border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                     : "border-gray-500 hover:border-emerald-400"
@@ -97,11 +97,12 @@ export default function Tasks() {
               </button>
 
               {/* Task Text + Priority */}
-              <div className="flex flex-col">
+              <div className="flex flex-col min-w-0">
                 <span
-                  className={`text-base font-medium transition-all ${
+                  className={`text-base font-medium transition-all truncate ${
                     task.completed ? "line-through text-gray-500" : "text-gray-200"
                   }`}
+                  title={task.text}
                 >
                   {task.text}
                 </span>
@@ -120,7 +121,7 @@ export default function Tasks() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 z-10">
+            <div className="flex items-center gap-2 sm:gap-3 z-10 shrink-0">
               {/* Category Tag */}
               {task.category && (
                 <span className={`text-[10px] font-bold px-2 py-1 rounded-md border ${task.category.color}`}>

@@ -78,9 +78,9 @@ export default function Expenses() {
         {ratio >= 1 && <div className="absolute inset-0 bg-red-500/5 animate-pulse pointer-events-none"></div>}
         <h3 className="text-gray-400 text-xs uppercase tracking-widest font-bold">Today's Spending</h3>
         
-        <p className={`text-5xl font-black mt-3 drop-shadow-lg flex items-baseline gap-2 ${ratio >= 1 ? 'text-red-400' : ratio > 0.7 ? 'text-amber-400' : 'text-emerald-400'}`}>
+        <p className={`text-4xl sm:text-5xl font-black mt-3 drop-shadow-lg flex flex-wrap items-baseline gap-2 ${ratio >= 1 ? 'text-red-400' : ratio > 0.7 ? 'text-amber-400' : 'text-emerald-400'}`}>
           ₹{dailyExpenses} 
-          <span className="text-xl text-gray-500 font-medium flex items-center gap-2">
+          <span className="text-lg sm:text-xl text-gray-500 font-medium flex items-center gap-2">
             / ₹{expenseBudget}
             <button 
               onClick={() => setIsEditingBudget(!isEditingBudget)}
@@ -127,12 +127,12 @@ export default function Expenses() {
         {transactions.length > 0 ? (
           <div className="flex flex-col gap-3">
             {transactions.map((t) => (
-              <div key={t.id} className="group flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-2xl hover:bg-white/10 transition-colors">
-                <div className="flex flex-col">
-                  <span className="text-gray-200 font-medium">{t.title}</span>
+              <div key={t.id} className="group flex justify-between items-center bg-white/5 border border-white/5 p-4 rounded-2xl hover:bg-white/10 transition-colors gap-2">
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className="text-gray-200 font-medium truncate">{t.title}</span>
                   <span className="text-xs text-gray-500 mt-0.5">{t.time}</span>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4 shrink-0">
                   <span className="text-red-400 font-bold">-₹{t.amount}</span>
                   <button 
                     onClick={() => deleteTransaction(t.id)}

@@ -128,18 +128,18 @@ export default function Dashboard() {
     <div className="flex flex-col gap-6 max-w-4xl mx-auto">
       
       {/* Header Profile */}
-      <div className="flex justify-between items-center bg-white/5 border border-white/10 p-5 rounded-3xl">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 p-1 flex items-center justify-center shadow-lg">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/5 border border-white/10 p-5 rounded-3xl">
+        <div className="flex items-center gap-4 w-full sm:w-auto">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 p-1 flex items-center justify-center shadow-lg shrink-0">
             <div className="w-full h-full bg-black rounded-full flex items-center justify-center text-xl">🚀</div>
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-xl font-bold text-gray-100">{greeting}, {user?.name || "User"}!</h1>
-            <span className="text-xs text-gray-400 font-medium">{formattedDate}</span>
+          <div className="flex flex-col min-w-0">
+            <h1 className="text-xl font-bold text-gray-100 truncate">{greeting}, {user?.name || "User"}!</h1>
+            <span className="text-xs text-gray-400 font-medium truncate">{formattedDate}</span>
           </div>
         </div>
-        <div className="flex flex-col items-end gap-2">
-          <div className="flex gap-2">
+        <div className="flex flex-col items-end sm:items-end w-full sm:w-auto gap-2 mt-2 sm:mt-0">
+          <div className="flex gap-2 self-end">
             <button 
               onClick={handleSync}
               className="text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1"
@@ -214,7 +214,7 @@ export default function Dashboard() {
           )}
         </div>
       </Card>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
         {/* Daily Score */}
         <motion.div
